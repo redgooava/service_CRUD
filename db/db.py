@@ -19,15 +19,6 @@ class Base(DeclarativeBase):
     pass
 
 
-# class Tabletest(Base):
-#     __tablename__ = "tabletest"
-#     db_id = Column(Integer, primary_key=True)
-#     rate_id = Column(Integer)
-#     rate_name = Column(String(50))
-#     service_id = Column(Integer)
-#     service_name = Column(String(50))
-#     price = Column(Numeric(14, 4))
-
 DB_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 logger.debug("ПОДКЛЮЧЕНИЕ К БД " + DB_URL)
