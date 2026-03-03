@@ -4,46 +4,46 @@
 
 import logging
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
+from sqlalchemy import Column, Integer, String, Numeric
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 from enviroment import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
+
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 class Base(DeclarativeBase):
     pass
 
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+# class Tabletest(Base):
+#     __tablename__ = "tabletest"
+#     db_id = Column(Integer, primary_key=True)
+#     rate_id = Column(Integer)
+#     rate_name = Column(String(50))
+#     service_id = Column(Integer)
+#     service_name = Column(String(50))
+#     price = Column(Numeric(14, 4))
 
 DB_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-logger.debug("ПОДКЛЮЧЕНИЕ К БД" + DB_URL)
+logger.debug("ПОДКЛЮЧЕНИЕ К БД " + DB_URL)
+logger.debug("ПОДКЛЮЧЕНИЕ К БД " + DB_URL)
 
-engine = create_engine(DB_URL)
+engine = create_engine(DB_URL, echo=True)
+
+inspector = inspect(engine)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
-def init_db():
-    """Создает таблицу, если её нет"""
-    try:
-        # Проверяем, есть ли таблица
-        from sqlalchemy import inspect
-        inspector = inspect(engine)
-
-        if not inspector.has_table("tabletest"):
-            logger.debug("Создаем таблицу tabletest...")
-            Base.metadata.create_all(bind=engine)
-            logger.debug("Таблица создана!")
-        else:
-            logger.debug("Таблица уже существует")
-    except Exception as e:
-        logger.debug(f"Ошибка при проверке/создании таблицы: {e}")
-
-
 async def get_db():
+    tables = inspector.get_table_names()
+    logger.debug('ТАБЛИЦЫ ДО ' + str(tables))
+    Base.metadata.create_all(bind=engine)
+    logger.debug('ТАБЛИЦЫ ПОСЛЕ ' + str(tables))
     db = SessionLocal()
     try:
         yield db

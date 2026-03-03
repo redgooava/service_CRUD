@@ -5,7 +5,7 @@
 
 from sqlalchemy import Column, Integer, String, Numeric
 
-from db import Base
+from db.db import Base
 
 
 class Tabletest(Base):

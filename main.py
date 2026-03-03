@@ -3,19 +3,16 @@ API
 """
 
 import logging
-import time
 
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 from fastapi import FastAPI, Depends
 
 from schemas import DataPostRequest, DataPostResponse, DataGetResponse
-from db.db import get_db, init_db
+from db.db import get_db
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-init_db()
 
 app = FastAPI()
 
