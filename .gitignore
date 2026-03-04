@@ -188,13 +188,6 @@ uvicorn.pid
 alembic/versions/*.pyc
 alembic/versions/__pycache__/
 
-# Docker
-.dockerignore
-Dockerfile
-docker-compose*.yml
-docker-compose*.yaml
-*.pid
-
 # Kubernetes
 *.kubeconfig
 kubeconfig
